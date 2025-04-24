@@ -15,6 +15,9 @@ jobs:
         with:
           java-version: '17'
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
       - name: Setup ChromeDriver
         uses: nanasess/setup-chromedriver@v2
         with:
