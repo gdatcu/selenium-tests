@@ -20,15 +20,5 @@ jobs:
         with:
           chrome-version: latest
 
-      - name: Grant execute permission for Maven wrapper (if needed)
-        run: chmod +x mvnw
-
       - name: Run tests with Maven
         run: mvn test
-
-      - name: Upload screenshots (if any)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: screenshots
-          path: screenshots/
