@@ -19,7 +19,7 @@ public class LoginTest {
     @BeforeMethod
     public void setup() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless"); // rulează fără UI
+        options.addArguments("--headless=new"); // rulează fără UI
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
