@@ -3,8 +3,8 @@ package tests;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -12,23 +12,29 @@ import pages.LoginPage;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.time.Duration;
 public class LoginTest {
     WebDriver driver;
     @VisibleForTesting
     @BeforeMethod
     public void setup() {
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless=new"); // rulează fără UI
-        options.addArguments("--no-sandbox");
-        options.addArguments("--disable-dev-shm-usage");
-        options.addArguments("--remote-allow-origins=*");
-        options.addArguments("--disable-gpu");
-        options.addArguments("--user-data-dir=/tmp/chrome-profile-" + System.currentTimeMillis());
+        try {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--headless=new");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
 
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.get("https://the-internet.herokuapp.com/login");
+            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+            driver.get("https://the-internet.herokuapp.com/login");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to connect to remote WebDriver");
+        }
+
     }
     @AfterMethod
     public void tearDown(ITestResult result) {
