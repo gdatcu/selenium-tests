@@ -6,6 +6,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
+        options: >-
+          --shm-size=2g
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -15,13 +23,14 @@ jobs:
         with:
           java-version: '17'
 
-      - name: Setup Chrome
-        uses: browser-actions/setup-chrome@v1
-
-      - name: Setup ChromeDriver
-        uses: nanasess/setup-chromedriver@v2
-        with:
-          chrome-version: latest
+      - name: Wait for Selenium container
+        run: |
+          echo "Waiting for Selenium server..."
+          for i in {1..30}; do
+            nc -z localhost 4444 && echo "Selenium ready!" && exit 0
+            sleep 1
+          done
+          echo "Selenium server not responding" && exit 1
 
       - name: Run tests with Maven
         run: mvn test
