@@ -3,6 +3,7 @@ package tests;
 import com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
@@ -27,7 +28,8 @@ public class LoginTest {
             options.addArguments("--disable-gpu");
             options.addArguments("--window-size=1920,1080");
 
-            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
+//            driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), options);
+            driver = new ChromeDriver(options);
             driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             driver.get("https://the-internet.herokuapp.com/login");
         } catch (Exception e) {
