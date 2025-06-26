@@ -36,6 +36,7 @@ public class LoginValid {
         }
         // 9. Închidem browserul
         driver.quit();
+		System.out.println("Modificari impreuna cu Yumy...");
     }
 
 }
